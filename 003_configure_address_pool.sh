@@ -1,6 +1,14 @@
 #!/bin/bash
 
 echo
+echo Check Docker networking for kind subnet
+subnet=$(docker network inspect -f '{{json .IPAM.Config}}' kind  | jq -r '.[].Subnet' | head -1 | cut -f 1 -d /)
+echo Subnet is $subnet
+first_ip=$(echo $subnet | cut -f 1-3 -d . | awk '{print $1 ".100"}')
+last_ip=$(echo $subnet | cut -f 1-3 -d . | awk '{print $1 ".200"}')
+echo Range is $first_ip - $last_ip
+
+echo
 echo Creating IPAddressPool and L2Advertisement ...
 
 cat <<EOF | kubectl apply -f -
@@ -12,7 +20,7 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-  - 172.18.0.100-172.18.0.200
+  - $first_ip-$last_ip
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement

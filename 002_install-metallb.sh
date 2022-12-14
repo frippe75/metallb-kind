@@ -12,9 +12,3 @@ kubectl wait --namespace metallb-system \
                 --timeout=90s
 
 
-echo
-echo Check Docker networking
-docker network inspect -f '{{.IPAM.Config}}' kind
-
-
-
