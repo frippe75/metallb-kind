@@ -53,6 +53,7 @@ spec:
     app: color-app
   ports:
   # Default port used by the image
-  - port: 5678
+  - port: 80
+    targetPort: 5678
 EOF
 
