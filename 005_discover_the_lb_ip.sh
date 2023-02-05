@@ -3,7 +3,7 @@
 LB_IP=$(kubectl get svc/color-service -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
 LB_PORT=$(kubectl get svc/color-service -o=jsonpath='{.spec.ports[0].port}')
 echo
-echo MetalLB ip from the pool is $LB_IP
+echo MetalLB IP from the pool is $LB_IP
 
 resolved=$(getent hosts $LB_IP | awk '{print $2}')
 if [ "$resolved" != "" ]
