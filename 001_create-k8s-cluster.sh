@@ -1,7 +1,6 @@
-#!/bin/bash
+!/bin/bash
 
-
-CLUSTER_NAME=cluster01
+source .env
 
 # Rquires kind binary is installed as well as jq package
 type jq >/dev/null 2>&1 && type kind >/dev/null 2>&1 || { echo >&2 "kind binary and jq is required."; exit 1; }
@@ -26,3 +25,13 @@ fi
 
 # List the cluster
 kubectl get nodes -o wide
+echo
+
+# Switch to the context
+kubectl config use-context kind-istio-testing
+echo
+
+# Add completion
+source <(kubectl completion bash)
+source <(kind completion bash)
+

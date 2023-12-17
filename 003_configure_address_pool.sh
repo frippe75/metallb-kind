@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source .env
+
 echo
 echo Check Docker networking for kind subnet
 if [ "$(type podman)" ]
@@ -24,7 +26,7 @@ apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
   name: first-pool
-  namespace: metallb-system
+  namespace: $METALLB_NS
 spec:
   addresses:
   - $first_ip-$last_ip
@@ -33,7 +35,7 @@ apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
   name: pool
-  namespace: metallb-system
+  namespace: $METALLB_NS
 spec:
   ipAddressPools:
     - first-pool
@@ -47,6 +49,6 @@ kubectl get ipaddresspools.metallb.io -A
 
 echo
 echo Get l2advertisements
-kubectl get l2advertisements.metallb.io --namespace=metallb-system
+kubectl get l2advertisements.metallb.io --namespace=$METALLB_NS
 
 
